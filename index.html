@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>StopWatch</title>
+<meta name="theme-color" content="#c0c0c0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="stopwatchWindow">
+  <div class="titlebar">
+    <span class="titlebar-box left"></span>
+    <span class="titlebar-stripes"></span>
+    <span class="titlebar-title">StopWatch</span>
+    <span class="titlebar-stripes"></span>
+    <span class="titlebar-box right"></span>
+  </div>
+
+  <div class="panel">
+
+    <div class="cell display-cell">
+      <input
+        id="timeInput"
+        class="display"
+        type="text"
+        inputmode="numeric"
+        maxlength="11"
+        value="00:00:00.0"
+        aria-label="Countdown duration"
+      >
+    </div>
+
+    <div class="cell">
+      <button id="resetBtn" class="mac-btn" disabled>
+        <span class="btn-label">Reset</span>
+        <span class="btn-key">⌘R</span>
+      </button>
+    </div>
+
+    <div class="cell">
+      <button id="goBtn" class="mac-btn focused">
+        <span class="btn-label">Go</span>
+        <span class="btn-key">⌘G</span>
+      </button>
+    </div>
+
+    <div class="cell">
+      <button id="stopBtn" class="mac-btn" disabled>
+        <span class="btn-label">Stop</span>
+        <span class="btn-key">⌘S</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

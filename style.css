@@ -1,0 +1,242 @@
+:root {
+    --bg: #c0c0c0;
+    --window: #d9d9d9;
+    --title: #e6e6e6;
+    --text: #000;
+    --secondary: #333;
+    --highlight: #000080;
+    --disabled: #888;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "ChiKareGo";
+    src: url("fonts/ChiKareGo2.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family: "ChiKareGo", "Chicago", "Geneva", sans-serif;
+    -webkit-font-smoothing: none;
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+
+/* Stopwatch window */
+
+#stopwatchWindow {
+    width: 320px;
+    max-width: 100%;
+
+    background: var(--window);
+    border: 2px solid #000;
+
+    box-shadow:
+        inset 2px 2px 0 #fff,
+        inset -2px -2px 0 #7f7f7f,
+        4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+
+/* Title bar */
+
+.titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 5px 8px;
+
+    background: var(--title);
+    border-bottom: 2px solid #000;
+}
+
+.titlebar-title {
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.titlebar-stripes {
+    flex: 1;
+    height: 14px;
+
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #000 0,
+        #000 2px,
+        transparent 2px,
+        transparent 5px
+    );
+}
+
+.titlebar-box {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+
+    background: var(--window);
+    border: 1px solid #000;
+
+    box-shadow:
+        inset 1px 1px 0 #fff,
+        inset -1px -1px 0 #7f7f7f;
+}
+
+
+/* Panel: 2x2 grid of rectangular areas */
+
+.panel {
+    padding: 16px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+}
+
+.cell {
+    display: flex;
+}
+
+
+/* Digital display */
+
+.display {
+    flex: 1;
+
+    margin: 0;
+    padding: 6px 8px;
+
+    width: 100%;
+
+    background: #000;
+    color: #e8e8e0;
+
+    font-family: "Courier New", Courier, monospace;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    text-align: center;
+
+    border: none;
+    outline: none;
+
+    box-shadow:
+        inset 2px 2px 0 #7f7f7f,
+        inset -2px -2px 0 #fff,
+        inset 0 0 0 3px #000;
+}
+
+.display:focus {
+    outline: 1px dotted #808080;
+    outline-offset: -4px;
+}
+
+.display[readonly] {
+    color: #a8a8a0;
+}
+
+
+/* Buttons, Mac OS 7 style */
+
+.mac-btn {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin: 0;
+    padding: 6px 10px;
+
+    width: 100%;
+
+    background: var(--window);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 16px;
+
+    border: 2px solid #000;
+    border-radius: 6px;
+
+    box-shadow:
+        inset 1px 1px 0 #fff,
+        inset -1px -1px 0 #7f7f7f;
+
+    cursor: pointer;
+}
+
+.mac-btn:active:not(:disabled) {
+    background: var(--highlight);
+    color: #fff;
+
+    box-shadow:
+        inset -1px -1px 0 #fff,
+        inset 1px 1px 0 #000040;
+}
+
+.mac-btn.focused {
+    outline: 1px dotted #000;
+    outline-offset: 3px;
+}
+
+.mac-btn:disabled {
+    color: var(--disabled);
+    cursor: default;
+}
+
+.btn-label {
+    font-size: 17px;
+}
+
+.btn-key {
+    font-size: 13px;
+    color: var(--secondary);
+}
+
+.mac-btn:disabled .btn-key {
+    color: var(--disabled);
+}
+
+.mac-btn:active:not(:disabled) .btn-key {
+    color: #e0e0ff;
+}
+
+
+/* Mobile */
+
+@media (max-width: 400px) {
+    #stopwatchWindow {
+        width: 100%;
+    }
+
+    .display {
+        font-size: 18px;
+    }
+
+    .mac-btn {
+        font-size: 15px;
+        padding: 8px;
+    }
+}

@@ -6,6 +6,39 @@
 
   const DEFAULT_VALUE = '00:00:00.0';
 
+  let inputDigits = "0000000";
+
+function formatDigits(digits) {
+  return `${digits.slice(0,2)}:${digits.slice(2,4)}:${digits.slice(4,6)}.${digits.slice(6)}`;
+}
+
+function digitsToTenths(digits) {
+  return (
+    parseInt(digits.slice(0,2), 10) * 36000 +
+    parseInt(digits.slice(2,4), 10) *   600 +
+    parseInt(digits.slice(4,6), 10) *    10 +
+    parseInt(digits.slice(6), 10)
+  );
+}
+
+function tenthsToDigits(tenths) {
+  if (tenths < 0) tenths = 0;
+
+  const t = tenths % 10;
+  const totalSeconds = Math.floor(tenths / 10);
+  const ss = totalSeconds % 60;
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const mm = totalMinutes % 60;
+  const hh = Math.floor(totalMinutes / 60);
+
+  return (
+    String(hh).padStart(2, "0") +
+    String(mm).padStart(2, "0") +
+    String(ss).padStart(2, "0") +
+    String(t)
+  );
+}
+
   let remainingTenths = 0;   // countdown time left, in tenths of a second
   let startValueTenths = 0;  // the value entered before Go was pressed (for Reset)
   let timerId = null;
@@ -32,9 +65,10 @@
     return `${pad2(hh)}:${pad2(mm)}:${pad2(ss)}.${t}`;
   }
 
-  function setDisplay(tenths) {
-    input.value = formatFromTenths(tenths);
-  }
+function setDisplay(tenths) {
+  inputDigits = tenthsToDigits(tenths);
+  input.value = formatDigits(inputDigits);
+}
 
   function setState({ idle = false, active = false, done = false } = {}) {
     if (idle) {
@@ -88,7 +122,7 @@
 
     if (!running && remainingTenths === 0 && input.readOnly === false) {
       // Fresh start: parse whatever is in the input
-      const parsed = parseToTenths(input.value);
+      const parsed = digitsToTenths(inputDigits);
       if (parsed === null || parsed === 0) {
         input.focus();
         return;
@@ -120,8 +154,10 @@
     stopTimer();
     remainingTenths = 0;
     setDisplay(startValueTenths || 0);
-    input.value = formatFromTenths(startValueTenths || 0);
-    if (!startValueTenths) input.value = DEFAULT_VALUE;
+    if (!startValueTenths) {
+      inputDigits = "0000000";
+      input.value = DEFAULT_VALUE;
+    }
     setState({ idle: true });
   }
 
@@ -151,17 +187,57 @@
     }
   });
 
-  input.addEventListener('input', () => {
-    // allow only digits and separators while editing
-    input.value = input.value.replace(/[^0-9:.]/g, '');
-  });
+input.addEventListener("focus", () => {
+  if (!running)
+    input.setSelectionRange(0, input.value.length);
+});
 
-  input.addEventListener('blur', () => {
-    if (input.readOnly) return;
-    if (parseToTenths(input.value) === null) {
-      input.value = DEFAULT_VALUE;
-    }
-  });
+input.addEventListener("keydown", (e) => {
+
+  if (input.readOnly)
+    return;
+
+  if (/^\d$/.test(e.key)) {
+    e.preventDefault();
+
+    inputDigits = (inputDigits + e.key).slice(-7);
+    input.value = formatDigits(inputDigits);
+
+    input.setSelectionRange(
+      input.value.length,
+      input.value.length
+    );
+
+    return;
+  }
+
+  if (e.key === "Backspace") {
+    e.preventDefault();
+
+    inputDigits = "0" + inputDigits.slice(0, -1);
+    input.value = formatDigits(inputDigits);
+
+    input.setSelectionRange(
+      input.value.length,
+      input.value.length
+    );
+
+    return;
+  }
+
+  const allowed = [
+    "Tab",
+    "Escape",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowUp",
+    "ArrowDown",
+    "Delete"
+  ];
+
+  if (!allowed.includes(e.key))
+    e.preventDefault();
+});
 
   setState({ idle: true });
 

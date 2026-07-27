@@ -6,8 +6,8 @@ const ASSETS = [
   './script.js',
   './manifest.json',
   './fonts/ChiKareGo2.ttf',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './app-icons/app-icon-192.png',
+  './app-icons/app-icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

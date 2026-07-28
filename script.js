@@ -6,6 +6,8 @@
 
   const DEFAULT_VALUE = '00:00:00.0';
 
+  const windowEl = document.getElementById('stopwatchWindow');
+  
   let inputDigits = "0000000";
 
 function formatDigits(digits) {
@@ -105,6 +107,7 @@ function setDisplay(tenths) {
       stopTimer();
       running = false;
       setState({ done: true });
+      windowEl.classList.add("alarm");
       return;
     }
     setDisplay(remainingTenths);
@@ -118,6 +121,7 @@ function setDisplay(tenths) {
   }
 
   function handleGo() {
+    windowEl.classList.remove("alarm");
     if (goBtn.disabled) return;
 
     if (!running && remainingTenths === 0 && input.readOnly === false) {
@@ -142,6 +146,7 @@ function setDisplay(tenths) {
   }
 
   function handleStop() {
+    windowEl.classList.remove("alarm");
     if (stopBtn.disabled) return;
     running = false;
     stopTimer();
@@ -149,6 +154,7 @@ function setDisplay(tenths) {
   }
 
   function handleReset() {
+    windowEl.classList.remove("alarm");
     if (resetBtn.disabled) return;
     running = false;
     stopTimer();
